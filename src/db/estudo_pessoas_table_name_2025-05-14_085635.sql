@@ -19,6 +19,27 @@ CREATE TABLE `table_name` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Cadastro de Pessoas';
 
+
+CREATE TABLE `compras` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `data_compra` timestamp NOT NULL DEFAULT current_timestamp() COMMENT 'Data e Hora da Compra',
+  `pessoa_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_compras_pessoa` FOREIGN KEY (`pessoa_id`) REFERENCES table_name(id) ON DELETE CASCADE ON UPDATE CASCADE
+) 
+
+CREATE TABLE `itens_compra` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `compra_id` bigint(20) NOT NULL,
+  `produto_id` bigint(20) NOT NULL,
+  `quantidade` int(11) NOT NULL,
+  `preco_unitario` decimal(10,2) NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_itens_compra_compra` FOREIGN KEY (`compra_id`) REFERENCES `compras`(`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_itens_compra_produto` FOREIGN KEY (`produto_id`) REFERENCES `produtos`(`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Cadastro de Itens de Compras';
+
+
 -- Inserção de dados de exemplo
 INSERT INTO table_name (name, telefone, endereco, imagem_perfil) VALUES
 ('João Silva', '(31) 91234-5678', 'Rua das Flores, 123', 'https://imagem.com/perfil.png'),
